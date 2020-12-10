@@ -7,7 +7,7 @@ const { getJobsFromHTML } = require("../jobs");
 const server = express();
 const apiRouter = express.Router();
 
-// const PER_PAGE = 10;
+const PER_PAGE = 10;
 
 apiRouter.get("/", (_, res) => {
   res.send("Nothing on this endpoint!");
