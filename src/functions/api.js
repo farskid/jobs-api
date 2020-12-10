@@ -66,6 +66,8 @@ function responseDecorator(res) {
   res.setHeader("x-last-modified", new Date().toISOString());
   // Disable caching
   res.set("Cache-Control", "no-store");
+
+  res.setHeader("Content-Type", "application/json");
   return res;
 }
 
