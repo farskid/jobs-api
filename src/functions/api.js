@@ -14,9 +14,9 @@ apiRouter.get("/", (_, res) => {
 });
 
 apiRouter.get("/jobs", (req, res) => {
-  // let { page = 1, perPage = PER_PAGE } = req.query;
+  let { page = 1, perPage = PER_PAGE } = req.query;
 
-  // console.log("GET", `/jobs?page=${page}&perPage=${perPage}`);
+  console.log("GET", `/jobs?page=${page}&perPage=${perPage}`);
 
   const htmlReq = fetch(
     "https://weworkremotely.com/categories/remote-programming-jobs"
@@ -27,28 +27,27 @@ apiRouter.get("/jobs", (req, res) => {
     .then((html) => {
       const jobs = getJobsFromHTML(html);
 
-      // const pageCount = Math.ceil(jobs.length / perPage);
-      // page = Number(page);
+      const pageCount = Math.ceil(jobs.length / perPage);
+      page = Number(page);
 
       //   invalid page, return the first page
-      // if (!page) {
-      //   console.log(`invalid page, page is reset to 1`);
-      //   page = 1;
-      // }
+      if (!page) {
+        console.log(`invalid page, page is reset to 1`);
+        page = 1;
+      }
 
       // //   pages over the last page, return the last page
-      // if (page > pageCount) {
-      //   console.log(
-      //     `page over the last page, page is reset to the last page ${pageCount}`
-      //   );
-      //   page = pageCount;
-      // }
+      if (page > pageCount) {
+        console.log(
+          `page over the last page, page is reset to the last page ${pageCount}`
+        );
+        page = pageCount;
+      }
 
       return responseDecorator(res).json({
-        // page,
-        // total: jobs.length,
-        // jobs: jobs.slice(page * perPage - perPage, page * perPage),
-        jobs,
+        page,
+        total: jobs.length,
+        jobs: jobs.slice(page * perPage - perPage, page * perPage),
       });
     })
     .catch((err) => {
