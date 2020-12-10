@@ -1,4 +1,5 @@
 const cheerio = require("cheerio");
+const uuid = require("uuid");
 
 module.exports.getJobsFromHTML = (html) => {
   const $ = cheerio.load(html);
@@ -14,6 +15,7 @@ module.exports.getJobsFromHTML = (html) => {
       const type = $(el).find(".company").eq(1).text() || null;
       const region = $(el).find(".region").text() || null;
       return {
+        id: uuid.v4(),
         isNew,
         link: `https://weworkremotely.com${link}`,
         company,

@@ -16,6 +16,6 @@
     "netlify-lambda": "^2.0.1",
     "node-fetch": "^2.6.1",
     "serverless-http": "^2.6.0",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.2"
   }
 }
