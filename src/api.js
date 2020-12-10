@@ -1,9 +1,9 @@
 const express = require("express");
 const { default: fetch } = require("node-fetch");
-const serverlessHTTP = require("serverless-http");
 const cors = require("cors");
-const { getJobsFromHTML } = require("../jobs");
-const db = require("../db.js");
+const { getJobsFromHTML } = require("./jobs");
+const db = require("./db.js");
+const PORT = process.env.PORT;
 
 const server = express();
 const apiRouter = express.Router();
@@ -19,7 +19,7 @@ apiRouter.get("/jobs", async (req, res) => {
     const cachedJobs = await db.readJobs();
 
     if (cachedJobs.length > 0) {
-      return responseDecorator(res).json({
+      return res.json({
         page,
         total: cachedJobs.length,
         jobs: cachedJobs.slice(page * perPage - perPage, page * perPage),
@@ -53,7 +53,7 @@ apiRouter.get("/jobs", async (req, res) => {
       page = pageCount;
     }
 
-    return responseDecorator(res).json({
+    return res.json({
       page,
       total: jobs.length,
       jobs: jobs.slice(page * perPage - perPage, page * perPage),
@@ -65,21 +65,6 @@ apiRouter.get("/jobs", async (req, res) => {
 });
 
 server.use(cors());
-server.use("/.netlify/functions/api", apiRouter);
-server.set("etag", false);
+server.use("/api", apiRouter);
 
-// No idea why a middleware didn't work!
-function responseDecorator(res) {
-  // new Date().toISOString()
-  res.setHeader("x-last-modified", new Date().toISOString());
-  // Disable caching
-  res.set("Cache-Control", "no-store");
-
-  res.setHeader("Content-Type", "application/json");
-
-  console.log(res.headers);
-  return res;
-}
-
-// Server will start at port 9000 by default
-module.exports.handler = serverlessHTTP(server);
+server.listen(PORT, () => {});

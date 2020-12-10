@@ -5,7 +5,7 @@
   "author": "Farzad YousefZadeh (farskid@gmail.com)",
   "license": "MIT",
   "scripts": {
-    "start": "netlify-lambda serve src/functions",
+    "start": "PORT=9000 node src/api.js",
     "build": "netlify-lambda build src/functions"
   },
   "dependencies": {
