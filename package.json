@@ -5,8 +5,7 @@
   "author": "Farzad YousefZadeh (farskid@gmail.com)",
   "license": "MIT",
   "scripts": {
-    "start": "PORT=9000 node src/api.js",
-    "build": "netlify-lambda build src/functions"
+    "start": "PORT=9000 node src/api.js"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
