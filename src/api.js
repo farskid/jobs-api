@@ -3,7 +3,8 @@ const { default: fetch } = require("node-fetch");
 const cors = require("cors");
 const { getJobsFromHTML } = require("./jobs");
 const db = require("./db.js");
-const PORT = process.env.PORT;
+const { withSeniority } = require("./seniority.js");
+const PORT = process.env.PORT || 9000;
 
 const server = express();
 const apiRouter = express.Router();
@@ -22,7 +23,9 @@ apiRouter.get("/jobs", async (req, res) => {
       return res.json({
         page,
         total: cachedJobs.length,
-        jobs: cachedJobs.slice(page * perPage - perPage, page * perPage),
+        jobs: cachedJobs
+          .slice(page * perPage - perPage, page * perPage)
+          .map(withSeniority),
       });
     }
 
@@ -56,7 +59,9 @@ apiRouter.get("/jobs", async (req, res) => {
     return res.json({
       page,
       total: jobs.length,
-      jobs: jobs.slice(page * perPage - perPage, page * perPage),
+      jobs: jobs
+        .slice(page * perPage - perPage, page * perPage)
+        .map(withSeniority),
     });
   } catch (err) {
     console.log(err);
