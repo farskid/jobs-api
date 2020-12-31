@@ -1,6 +1,6 @@
 function seniority(job = { title: "" }) {
   switch (true) {
-    case job.title.toLowerCase().includes("senior"):
+    case ["sr", "ssr", "senior"].includes(job.title.toLowerCase()):
       return "senior";
     case job.title.toLowerCase().includes("lead"):
       return "lead";
